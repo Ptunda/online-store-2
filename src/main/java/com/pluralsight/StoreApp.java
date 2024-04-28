@@ -15,11 +15,12 @@ import java.util.ArrayList;
 
 public class StoreApp {
 
-    static final String FILENAME = "inventory.csv";
+    static final String FILE_NAME = "inventory.csv";
+    static final String FILE_NAME1 = "newArrivals.csv";
 
     public static void main(String[] args) {
 
-        ArrayList<Product> inventory = loadInventory();
+        ArrayList<Product> inventory = loadInventory(FILE_NAME);
 
         System.out.println("\nWelcome to our online store:\n");
 
@@ -33,10 +34,68 @@ public class StoreApp {
 
         }
 
+
+        // Implement inventory update functionality using data from 'newArrivals.csv'
+        // create a file reading functionality for inventory.csv
+        try {
+
+            FileReader fileReader1 = new FileReader(FILE_NAME1);
+            BufferedReader bufferedReader1 = new BufferedReader(fileReader1);
+
+            String input; // a String to read each line from newArrivals.csv
+
+            while((input = bufferedReader1.readLine()) != null){
+
+                // extract values from inventory.csv
+                String[] tokens = input.split("\\|");
+
+                // validate that the array has the expected size
+                if (tokens.length == 4){
+
+                    int id1 = Integer.parseInt(tokens[0]);
+                    String description1 = tokens[1];
+                    double price1 = Double.parseDouble(tokens[2]);
+                    String department1 = tokens[3];
+
+                    // create an instance of the Product class
+                    Product product1 = new Product(id1, description1, price1, department1);
+
+                    inventory.add(product1); // add objects to the ArrayList
+
+                }
+
+            }
+
+            bufferedReader1.close();
+
+        } catch (FileNotFoundException e) {
+
+            System.out.println("FileNotFoundException occurred! " + e.getMessage());
+
+        } catch (IOException e){
+
+            System.out.println("IOException occurred! " + e.getMessage());
+
+        }
+
+
+        // updated inventory
+        System.out.println("\nWelcome to our updated online store:\n");
+
+        int j = 1;
+
+        // loop to display items in the store
+        for(Product product : inventory){
+
+            System.out.println(j + ". ID: " + product.getId() + " - " + product.getDescription() + " - $" + product.getPrice() + " - " + product.getDepartment());
+            j++;
+
+        }
+
     }
 
     // method that creates the initial inventory
-    public static ArrayList<Product> loadInventory(){
+    public static ArrayList<Product> loadInventory(String file){
 
         // create the instance the loadInventory() method
         ArrayList<Product> products = new ArrayList<>();
@@ -44,7 +103,7 @@ public class StoreApp {
         // create a file reading functionality for inventory.csv
         try {
 
-            FileReader fileReader = new FileReader(FILENAME);
+            FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             String line; // a String to read each line from inventory.csv
@@ -86,4 +145,18 @@ public class StoreApp {
         return products;
 
     }
+
+
+    // a method that updates additional products to the ArrayList. add more products and 2 more product categories
+    public static ArrayList<Product> loadMoreInventory(String file1){
+
+        // create the instance the loadMoreInventory() method
+        ArrayList<Product> products1 = new ArrayList<>();
+
+
+
+        return products1;
+
+    }
+
 }
