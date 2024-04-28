@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class StoreApp {
 
@@ -92,6 +94,21 @@ public class StoreApp {
 
         }
 
+        Collections.sort(inventory, new ProductDepartmentComparator());
+
+        // updated inventory
+        System.out.println("\nWelcome to our updated online store:\n");
+
+        int k = 1;
+
+        // loop to display items in the store
+        for(Product product : inventory){
+
+            System.out.println(k + ". ID: " + product.getId() + " - " + product.getDescription() + " - $" + product.getPrice() + " - " + product.getDepartment());
+            k++;
+
+        }
+
     }
 
     // method that creates the initial inventory
@@ -146,17 +163,14 @@ public class StoreApp {
 
     }
 
+    // Custom comparator for sorting products by department
+    static class ProductDepartmentComparator implements Comparator<Product> {
+        @Override
+        public int compare(Product p1, Product p2) {
 
-    // a method that updates additional products to the ArrayList. add more products and 2 more product categories
-    public static ArrayList<Product> loadMoreInventory(String file1){
+            return p1.getDepartment().compareTo(p2.getDepartment());
 
-        // create the instance the loadMoreInventory() method
-        ArrayList<Product> products1 = new ArrayList<>();
-
-
-
-        return products1;
-
+        }
     }
 
 }
